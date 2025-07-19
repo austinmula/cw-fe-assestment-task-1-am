@@ -1,8 +1,12 @@
-import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Search } from "lucide-react";
+import { SearchInput } from "./SearchInput";
 
 export function Header() {
+  const handleHeaderSearch = (search: string) => {
+    console.log("Header search:", search);
+    // Implement header search logic here
+  };
+
   return (
     <header className="flex items-center justify-between px-6 py-4 bg-black border-b border-gray-800">
       <div className="flex items-center gap-2">
@@ -11,20 +15,15 @@ export function Header() {
       </div>
 
       <div className="flex items-center gap-4">
-        <div style={{ position: "relative" }}>
-          <span>
-            <span>
-              <span className="absolute left-3 top-2.5">
-                <Search className="text-gray-400 text-sm" />
-              </span>
-            </span>
-          </span>
-          <Input
-            type="text"
-            placeholder="Search..."
-            className="pl-9 bg-gray-800 text-white border-none focus:ring-0 rounded-full"
-          />
-        </div>
+        <SearchInput
+          onSearch={handleHeaderSearch}
+          placeholder="Search..."
+          size="sm"
+          variant="compact"
+          showButton={false}
+          className="w-64"
+          debounceMs={500}
+        />
         <Avatar style={{ width: "32px", height: "32px" }}>
           <AvatarImage src="/avatar.jpg" alt="User Avatar" />
           <AvatarFallback>U</AvatarFallback>
