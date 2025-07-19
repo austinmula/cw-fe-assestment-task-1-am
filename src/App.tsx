@@ -5,7 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
-function TagList({ title, tags }) {
+interface TagListProps {
+  title: string;
+  tags: string[];
+}
+
+function TagList({ title, tags }: TagListProps) {
   return (
     <div className="mt-8 px-6 max-w-5xl mx-auto">
       <div className="text-white text-lg font-semibold mb-4">{title}</div>
@@ -42,13 +47,15 @@ function BoxArea97() {
   );
 }
 
+interface BoxArea108Props {
+  initialValue: string;
+  onSearch: (search: string) => void;
+}
+
 function BoxArea108({
   initialValue,
   onSearch,
-}: {
-  initialValue: string;
-  onSearch: (search: string) => void;
-}) {
+}: BoxArea108Props) {
   const [innerValue, setInnerValue] = useState(initialValue);
 
   useEffect(() => {
@@ -80,7 +87,7 @@ function Header() {
   return (
     <header className="flex items-center justify-between px-6 py-4 bg-black border-b border-gray-800">
       <div className="flex items-center gap-2">
-        <img src="/task1/logo.png" alt="Logo" className="w-10 h-10" />
+        <img src="/task1/logo.png" alt="Wortionary Logo" className="w-10 h-10" />
         <div className="text-white font-semibold text-lg">Wortionary</div>
       </div>
 
@@ -95,12 +102,12 @@ function Header() {
           </span>
           <Input
             type="text"
-            value="search"
+            placeholder="Search..."
             className="pl-9 bg-gray-800 text-white border-none focus:ring-0 rounded-full"
           />
         </div>
         <Avatar style={{ width: "32px", height: "32px" }}>
-          <AvatarImage src="/avatar.jpg" />
+          <AvatarImage src="/avatar.jpg" alt="User Avatar" />
           <AvatarFallback>U</AvatarFallback>
         </Avatar>
       </div>
@@ -109,14 +116,14 @@ function Header() {
 }
 
 export default function App() {
-  const [tags, setTags] = useState([
+  const tags: string[] = [
     "NFT",
     "Metaverse",
     "Sustainable",
     "Sonder",
     "FOMO",
     "Ghosting",
-  ]);
+  ];
 
   return (
     <main className="bg-black min-h-screen text-white">
