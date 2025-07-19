@@ -73,8 +73,8 @@ export function SearchInput({
   const sizeClasses = getSizeClasses();
 
   const containerClass = variant === "compact" 
-    ? `flex items-center bg-gray-800 rounded-full w-full ${sizeClasses.container} ${className}`
-    : `flex items-center bg-black rounded-full w-full mt-6 shadow-lg ${sizeClasses.container} ${className}`;
+    ? `flex items-center bg-gray-800 rounded-md w-full ${sizeClasses.container} ${className}`
+    : `flex items-center bg-black rounded-md w-full mt-6 shadow-lg ${sizeClasses.container} ${className}`;
 
   return (
     <div className={containerClass}>
