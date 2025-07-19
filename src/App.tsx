@@ -28,7 +28,7 @@ function TagList({ title, tags }: TagListProps) {
   );
 }
 
-function BoxArea97() {
+function HeroSection() {
   const onSearch = (search: string) => {
     console.log(search);
     // implementing the search logic is not required for this task
@@ -41,21 +41,21 @@ function BoxArea97() {
         <h1 className="text-3xl md:text-5xl font-bold text-white">
           Search for words, phrases and meanings
         </h1>
-        <BoxArea108 initialValue="" onSearch={onSearch} />
+        <SearchInput initialValue="" onSearch={onSearch} />
       </div>
     </div>
   );
 }
 
-interface BoxArea108Props {
+interface SearchInputProps {
   initialValue: string;
   onSearch: (search: string) => void;
 }
 
-function BoxArea108({
+function SearchInput({
   initialValue,
   onSearch,
-}: BoxArea108Props) {
+}: SearchInputProps) {
   const [innerValue, setInnerValue] = useState(initialValue);
 
   useEffect(() => {
@@ -128,7 +128,7 @@ export default function App() {
   return (
     <main className="bg-black min-h-screen text-white">
       <Header />
-      <BoxArea97 />
+      <HeroSection />
       <TagList title="Trending" tags={tags} />
       <TagList title="For you" tags={tags} />
     </main>
