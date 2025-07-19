@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useId, memo, useCallback, useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
@@ -14,9 +14,11 @@ interface SearchInputProps {
   disabled?: boolean;
   className?: string;
   debounceMs?: number;
+  ariaLabel?: string;
+  ariaDescribedBy?: string;
 }
 
-export function SearchInput({
+export const SearchInput = memo(function SearchInput({
   initialValue = "",
   onSearch,
   placeholder = "Type to search...",
@@ -26,28 +28,35 @@ export function SearchInput({
   variant = "default",
   disabled = false,
   className = "",
-  debounceMs = 300
+  debounceMs = 300,
+  ariaLabel = "Search input",
+  ariaDescribedBy
 }: SearchInputProps) {
   const [innerValue, setInnerValue] = useState(initialValue);
+  const inputId = useId();
+  const buttonId = useId();
+
+  // Memoize debounced search to prevent unnecessary recreations
+  const debouncedSearch = useCallback(() => {
+    onSearch(innerValue);
+  }, [onSearch, innerValue]);
 
   // Debounced search effect
   useEffect(() => {
-    const timer = setTimeout(() => {
-      onSearch(innerValue);
-    }, debounceMs);
-
+    const timer = setTimeout(debouncedSearch, debounceMs);
     return () => clearTimeout(timer);
-  }, [innerValue, onSearch, debounceMs]);
+  }, [debouncedSearch, debounceMs]);
 
   useEffect(() => {
     setInnerValue(initialValue);
   }, [initialValue]);
 
-  const handleSearchClick = () => {
+  const handleSearchClick = useCallback(() => {
     onSearch(innerValue);
-  };
+  }, [onSearch, innerValue]);
 
-  const getSizeClasses = () => {
+  // Memoize size classes to prevent recalculation on every render
+  const sizeClasses = useMemo(() => {
     switch (size) {
       case "sm":
         return {
@@ -68,35 +77,55 @@ export function SearchInput({
           button: "ml-4 px-4 py-2"
         };
     }
-  };
+  }, [size]);
 
-  const sizeClasses = getSizeClasses();
-
-  const containerClass = variant === "compact" 
-    ? `flex items-center bg-gray-800 rounded-md w-full ${sizeClasses.container} ${className}`
-    : `flex items-center bg-black rounded-md w-full mt-6 shadow-lg ${sizeClasses.container} ${className}`;
+  // Memoize container class to prevent string concatenation on every render
+  const containerClass = useMemo(() => {
+    return variant === "compact" 
+      ? `flex items-center bg-gray-800 rounded-md w-full ${sizeClasses.container} ${className}`
+      : `flex items-center bg-black rounded-md w-full mt-6 shadow-lg ${sizeClasses.container} ${className}`;
+  }, [variant, sizeClasses.container, className]);
 
   return (
-    <div className={containerClass}>
-      <Search className={`text-gray-400 ${sizeClasses.icon}`} />
+    <div 
+      className={containerClass}
+      role="search"
+      aria-label="Search form"
+    >
+      <Search 
+        className={`text-gray-400 ${sizeClasses.icon}`} 
+        aria-hidden="true"
+      />
       <Input
+        id={inputId}
         value={innerValue}
         onChange={(e) => setInnerValue(e.target.value)}
-        onKeyDown={(e) => e.key === "Enter" && handleSearchClick()}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            handleSearchClick();
+          }
+        }}
         type="text"
         placeholder={placeholder}
         disabled={disabled}
-        className="flex-1 bg-transparent border-none text-white placeholder:text-gray-400 focus:ring-0 focus:outline-none"
+        aria-label={ariaLabel}
+        aria-describedby={ariaDescribedBy}
+        autoComplete="off"
+        className="flex-1 bg-transparent border-none text-white placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500 focus:outline-none"
       />
       {showButton && (
         <Button 
+          id={buttonId}
           onClick={handleSearchClick}
           disabled={disabled}
-          className={`bg-blue-600 hover:bg-blue-700 text-white ${sizeClasses.button} transition-colors duration-200`}
+          type="button"
+          aria-label={`${buttonText} for "${innerValue || placeholder}"`}
+          className={`bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-black text-white ${sizeClasses.button} transition-colors duration-200`}
         >
           {buttonText}
         </Button>
       )}
     </div>
   );
-}
+});

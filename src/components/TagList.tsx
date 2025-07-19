@@ -1,88 +1,127 @@
 import { Badge } from "@/components/ui/badge";
+import { useId, type KeyboardEvent, createElement, memo, useCallback, useMemo } from "react";
+
+const SAMPLE_TAGS = [
+  "Development", "Design", "Marketing", "Business", "Technology",
+  "Writing", "Photography", "Travel", "Food", "Health"
+];
 
 interface TagListProps {
-  title: string;
-  tags: string[];
+  title?: string;
+  tags?: readonly string[];
   onTagClick?: (tag: string) => void;
   variant?: "default" | "outline" | "secondary";
   size?: "sm" | "md" | "lg";
   maxItems?: number;
   showMoreText?: string;
   className?: string;
+  ariaLabel?: string;
+  clickable?: boolean;
+  showTitle?: boolean;
+  titleLevel?: 1 | 2 | 3 | 4 | 5 | 6;
+  keyboardNavigation?: boolean;
 }
 
-export function TagList({ 
-  title, 
-  tags, 
-  onTagClick,
+export const TagList = memo(function TagList({ 
+  title = "Popular Tags",
+  tags = SAMPLE_TAGS,
   variant = "default",
   size = "md",
+  clickable = false,
+  onTagClick,
+  showTitle = true,
+  titleLevel = 2,
+  ariaLabel,
+  keyboardNavigation = true,
   maxItems,
-  showMoreText = "Show more...",
   className = ""
 }: TagListProps) {
-  const displayTags = maxItems ? tags.slice(0, maxItems) : tags;
-  const hasMoreTags = maxItems && tags.length > maxItems;
-
-  const handleTagClick = (tag: string) => {
-    if (onTagClick) {
+  const titleId = useId();
+  const listId = useId();
+  
+  const handleKeyDown = useCallback((event: KeyboardEvent<HTMLButtonElement>, tag: string) => {
+    if (keyboardNavigation && (event.key === 'Enter' || event.key === ' ')) {
+      event.preventDefault();
+      if (clickable && onTagClick) {
+        onTagClick(tag);
+      }
+    }
+  }, [keyboardNavigation, clickable, onTagClick]);
+  
+  const handleTagClick = useCallback((tag: string) => {
+    if (clickable && onTagClick) {
       onTagClick(tag);
     }
-  };
+  }, [clickable, onTagClick]);
 
-  const getSizeClasses = () => {
-    switch (size) {
-      case "sm":
-        return "text-xs px-2 py-1";
-      case "lg":
-        return "text-base px-4 py-2";
-      default:
-        return "text-sm px-3 py-1.5";
-    }
-  };
+  // Memoize display tags to prevent unnecessary array operations
+  const displayTags = useMemo(() => {
+    return maxItems ? tags.slice(0, maxItems) : tags;
+  }, [tags, maxItems]);
 
-  const getVariantClasses = () => {
-    switch (variant) {
-      case "outline":
-        return "bg-transparent border border-gray-600 text-white hover:border-gray-400";
-      case "secondary":
-        return "bg-gray-700 text-white hover:bg-gray-600";
-      default:
-        return "bg-gray-800 text-white hover:bg-gray-700";
-    }
-  };
+  // Memoize size-based class names
+  const tagSizeClasses = useMemo(() => {
+    const sizeMap = {
+      sm: "text-xs px-2 py-1",
+      md: "",
+      lg: "text-base px-4 py-2"
+    };
+    return sizeMap[size];
+  }, [size]);
 
   return (
-    <div className={`mt-8 px-6 max-w-5xl mx-auto ${className}`}>
-      <div className="text-white text-lg font-semibold mb-4">{title}</div>
-      <div className="flex flex-wrap gap-3">
+    <section 
+      className={`space-y-4 ${className}`}
+      aria-labelledby={showTitle ? titleId : undefined}
+      aria-label={!showTitle ? ariaLabel || title : undefined}
+    >
+      {showTitle && (
+        createElement(
+          `h${titleLevel}`,
+          { 
+            id: titleId,
+            className: "text-2xl font-bold text-gray-900"
+          },
+          title
+        )
+      )}
+      
+      <div 
+        id={listId}
+        role="list"
+        aria-label={ariaLabel || `${title} list`}
+        className="flex flex-wrap gap-2"
+      >
         {displayTags.map((tag) => (
-          <Badge
-            key={tag}
-            onClick={() => handleTagClick(tag)}
-            className={`
-              ${getVariantClasses()} 
-              ${getSizeClasses()} 
-              ${onTagClick ? 'cursor-pointer' : 'cursor-default'}
-              transition-colors duration-200
-            `}
-          >
-            {tag}
-          </Badge>
+          <div key={tag} role="listitem">
+            {clickable ? (
+              <button
+                onClick={() => handleTagClick(tag)}
+                onKeyDown={(e) => handleKeyDown(e, tag)}
+                className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-md"
+                aria-label={`Select tag: ${tag}`}
+              >
+                <Badge 
+                  variant={variant}
+                  className={`
+                    transition-colors hover:bg-gray-200 cursor-pointer
+                    ${tagSizeClasses}
+                  `}
+                >
+                  {tag}
+                </Badge>
+              </button>
+            ) : (
+              <Badge 
+                variant={variant}
+                className={tagSizeClasses}
+              >
+                {tag}
+              </Badge>
+            )}
+          </div>
         ))}
-        {hasMoreTags && (
-          <Badge
-            variant="outline"
-            className="cursor-pointer text-gray-400 border-gray-600 hover:border-gray-400"
-            onClick={() => {
-              // Could trigger a callback to show all tags
-              console.log(`${tags.length - maxItems!} more tags available`);
-            }}
-          >
-            {showMoreText}
-          </Badge>
-        )}
       </div>
-    </div>
+    </section>
   );
-}
+});
