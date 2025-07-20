@@ -121,7 +121,7 @@ export const SearchInput = memo(function SearchInput({
           disabled={disabled}
           type="button"
           aria-label={`${buttonText} for "${innerValue || placeholder}"`}
-          className={`bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-black text-white ${sizeClasses.button} transition-colors duration-200`}
+          className={`bg-[#1980e5] hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-black text-white ${sizeClasses.button} transition-colors duration-200`}
         >
           {buttonText}
         </Button>

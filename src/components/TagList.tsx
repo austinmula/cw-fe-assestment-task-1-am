@@ -71,7 +71,7 @@ export const TagList = memo(function TagList({
 
   return (
     <section 
-      className={`space-y-4 ${className}`}
+      className={`space-y-4 max-w-5xl mx-auto ${className}`}
       aria-labelledby={showTitle ? titleId : undefined}
       aria-label={!showTitle ? ariaLabel || title : undefined}
     >
@@ -80,7 +80,7 @@ export const TagList = memo(function TagList({
           `h${titleLevel}`,
           { 
             id: titleId,
-            className: "text-2xl font-bold text-gray-900"
+            className: "text-2xl font-bold text-white"
           },
           title
         )
@@ -104,7 +104,7 @@ export const TagList = memo(function TagList({
                 <Badge 
                   variant={variant}
                   className={`
-                    transition-colors hover:bg-gray-200 cursor-pointer
+                    transition-colors hover:bg-gray-700 hover:text-white cursor-pointer
                     ${tagSizeClasses}
                   `}
                 >

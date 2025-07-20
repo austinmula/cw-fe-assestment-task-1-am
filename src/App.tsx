@@ -61,7 +61,7 @@ export default function App() {
               title="For you" 
               tags={PERSONALIZED_TAGS} 
               onTagClick={handleTagClick}
-              variant="outline"
+              variant="default"
               size="sm"
               maxItems={5}
               showMoreText="View all..."
