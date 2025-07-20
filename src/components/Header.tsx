@@ -10,7 +10,7 @@ export const Header = memo(function Header() {
 
   return (
     <header 
-      className="flex items-center justify-between px-6 py-4 bg-black border-b border-gray-800"
+      className="flex items-center justify-between px-6 py-4 bg-[#121417] border-b border-gray-800"
       role="banner"
       aria-label="Main header"
     >
@@ -29,11 +29,11 @@ export const Header = memo(function Header() {
       <nav className="flex items-center gap-4" role="navigation" aria-label="User navigation">
         <SearchInput
           onSearch={handleHeaderSearch}
-          placeholder="Search..."
+          placeholder="Search"
           size="sm"
           variant="compact"
           showButton={false}
-          className="w-64"
+          className="w-60 max-md:w-44"
           debounceMs={500}
           ariaLabel="Search dictionary"
         />

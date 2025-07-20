@@ -104,7 +104,7 @@ export const TagList = memo(function TagList({
                 <Badge 
                   variant={variant}
                   className={`
-                    transition-colors hover:bg-gray-700 hover:text-white cursor-pointer
+                    transition-colors hover:bg-gray-700 bg-[#293038] px-3 py-2 hover:text-white text-[#9eabb8] cursor-pointer
                     ${tagSizeClasses}
                   `}
                 >

@@ -40,7 +40,7 @@ export default function App() {
         Skip to main content
       </a>
       
-      <div className="bg-black min-h-screen text-white">
+      <div className="bg-[#121417] min-h-screen text-white">
         <Header />
         
         <main id="main-content" role="main" className="focus:outline-none" tabIndex={-1}>
@@ -59,11 +59,11 @@ export default function App() {
             
             <TagList 
               title="For you" 
-              tags={PERSONALIZED_TAGS} 
+              tags={TRENDING_TAGS} 
               onTagClick={handleTagClick}
               variant="default"
-              size="sm"
-              maxItems={5}
+              size="md"
+              // maxItems={5}
               showMoreText="View all..."
               clickable={true}
               ariaLabel="Personalized dictionary terms"

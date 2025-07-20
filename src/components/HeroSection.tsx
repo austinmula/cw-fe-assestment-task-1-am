@@ -32,7 +32,7 @@ export const HeroSection = memo(function HeroSection() {
           initialValue="" 
           onSearch={onSearch}
           ariaLabel="Main dictionary search"
-          placeholder="Enter a word to search..."
+          placeholder="Type to search..."
         />
       </div>
     </section>

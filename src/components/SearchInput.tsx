@@ -82,8 +82,8 @@ export const SearchInput = memo(function SearchInput({
   // Memoize container class to prevent string concatenation on every render
   const containerClass = useMemo(() => {
     return variant === "compact" 
-      ? `flex items-center bg-gray-800 rounded-md w-full ${sizeClasses.container} ${className}`
-      : `flex items-center bg-black rounded-md w-full mt-6 shadow-lg ${sizeClasses.container} ${className}`;
+      ? `flex items-center bg-[#293038] rounded-md w-full ${sizeClasses.container} ${className}`
+      : `flex items-center bg-[#1c2127] rounded-md w-full mt-6 shadow-lg ${sizeClasses.container} ${className}`;
   }, [variant, sizeClasses.container, className]);
 
   return (
