@@ -294,6 +294,11 @@ manualChunks: {
 - **Logo**: `loading="eager"` for critical branding elements
 - **Async Decoding**: `decoding="async"` for non-blocking image processing
 
+**WebP Image Conversion**:
+- **Hero Background**: Converted hero section background image from PNG to WebP format (`/task1/hero-bg.webp`)
+- **Benefit**: WebP provides superior compression and quality compared to PNG, resulting in faster load times and reduced bandwidth usage
+- **Implementation**: Updated `HeroSection.tsx` to use the `.webp` image source for the hero background
+
 **Benefits**:
 - **Faster Initial Page Load**: Deferred loading of non-critical images
 - **Reduced Bandwidth**: Images only load when needed

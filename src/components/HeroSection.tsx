@@ -14,7 +14,7 @@ export const HeroSection = memo(function HeroSection() {
       aria-labelledby="hero-title"
     >
       <img 
-        src="/task1/hero-bg.png" 
+        src="/task1/hero-bg.webp" 
         className="w-full h-96 object-cover"
         alt="Dictionary search background"
         role="img"
