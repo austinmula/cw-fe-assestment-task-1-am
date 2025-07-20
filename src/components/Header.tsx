@@ -10,9 +10,12 @@ export const Header = memo(function Header() {
 
   return (
     <header 
-      className="flex items-center justify-between px-6 py-4 bg-black border-b border-gray-800"
+      className="bg-black border-b border-gray-800"
       role="banner"
+      aria-label="Main header"
     >
+      <div className="container flex items-center justify-between px-6 py-4 mx-auto">
+
       <div className="flex items-center gap-2">
         <img 
           src="/task1/logo.png" 
@@ -46,6 +49,7 @@ export const Header = memo(function Header() {
           <AvatarFallback>U</AvatarFallback>
         </Avatar>
       </nav>
+      </div>
     </header>
   );
 });
